@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>⌛ Timpul este:</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .calculator {
+            background: #222;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 10px;
+        }
+        .display {
+            background: #111;
+            color: #0f0;
+            font-size: 2em;
+            text-align: right;
+            padding: 10px;
+            border-radius: 10px;
+            min-width: 260px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            grid-gap: 10px;
+        }
+        button {
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: #444;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #666;
+        }
+        button.operator {
+            background: #ff9500;
+            color: #fff;
+        }
+        button.operator:hover {
+            background: #ffa733;
+        }
+        button#toggleTitle {
+            grid-column: span 4;
+            background: #1976d2;
+        }
+        button#toggleTitle:hover {
+            background: #2196f3;
+        }
+        button#clear {
+            grid-column: span 4;
+            background: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="press('/')" class="operator">÷</button>
+
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('*')" class="operator">×</button>
+
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('-')" class="operator">−</button>
+
+            <button onclick="press('0')">0</button>
+            <button onclick="press('.')">.</button>
+            <button onclick="calculate()" class="operator">=</button>
+            <button onclick="press('+')" class="operator">+</button>
+
+            <button id="clear" onclick="clearDisplay()">C</button>
+            <button id="toggleTitle" onclick="toggleTitle()">Scientific Mode</button>
+        </div>
+    </div>
+
+    <script>
+        let expression = '';
+        let showTime = true;
+
+        function press(value) {
+            expression += value;
+            document.getElementById('display').textContent = expression;
+        }
+
+        function calculate() {
+            try {
+                expression = eval(expression).toString();
+            } catch {
+                expression = 'Error';
+            }
+            document.getElementById('display').textContent = expression;
+        }
+
+        function clearDisplay() {
+            expression = '';
+            document.getElementById('display').textContent = '0';
+        }
+
+        // Clock for the tab title
+        function updateClock() {
+            if(showTime) {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');    
+                const ampm = hours >= 12 ? 'PM' : "AM";
+                hours = hours % 12 || 12;
+                const time =  `${hours}:${minutes}:${seconds}${ampm}`;
+                document.title = `⌛ Timpul este: ${time}`;
+            }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Toggle title between "Calc" and time
+        function toggleTitle() {
+            showTime = !showTime;
+            if(!showTime){
+                document.title = "Calc";
+            } else {
+                updateClock(); // immediately show time when toggled back
+            }
+        }
+
+        // Beforeunload warning
+        window.addEventListener("beforeunload", function(e){
+            if(expression !== '') {
+                e.preventDefault();
+                e.returnValue = "";
+            }
+        });
+    </script>
+</body>
+</html>
