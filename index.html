@@ -4,63 +4,26 @@
 <meta charset="UTF-8">
 <title>⌛ Timpul este:</title>
 <style>
-  /* === BODY & CALCULATOR STYLING === */
-  body {
-    display:flex; justify-content:center; align-items:center;
-    height:100vh; margin:0; font-family:sans-serif; background:#f0f0f0;
-  }
-  .calculator {
-    background:#222; padding:20px; border-radius:15px;
-    display:grid; grid-template-rows:auto 1fr; gap:10px;
-  }
-  .display {
-    background:#111; color:#0f0; font-size:2em;
-    text-align:right; padding:10px; border-radius:10px; min-width:260px;
-  }
+  body { display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:sans-serif; background:#f0f0f0; }
+  .calculator { background:#222; padding:20px; border-radius:15px; display:grid; grid-template-rows:auto 1fr; gap:10px; }
+  .display { background:#111; color:#0f0; font-size:2em; text-align:right; padding:10px; border-radius:10px; min-width:260px; }
   .buttons { display:grid; grid-template-columns:repeat(4,60px); grid-gap:10px; }
-  button {
-    padding:15px; font-size:1.2em; border:none; border-radius:10px;
-    background:#444; color:#fff; cursor:pointer; transition:0.2s;
-  }
+  button { padding:15px; font-size:1.2em; border:none; border-radius:10px; background:#444; color:#fff; cursor:pointer; transition:0.2s; }
   button:hover { background:#666; }
   button.operator { background:#ff9500; }
   button.operator:hover { background:#ffa733; }
   button#toggleTitle { grid-column:span 4; background:#1976d2; }
   button#toggleTitle:hover { background:#2196f3; }
   button#clear { grid-column:span 4; background:#d32f2f; }
-
-  /* === AI FRAME BUTTON === */
-  .top-right-btn {
-    position:fixed; top:15px; right:15px; width:50px; height:50px;
-    background:#1976d2; border:none; border-radius:50%; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; z-index:100;
-    transition:.2s;
-  }
+  .top-right-btn { position:fixed; top:15px; right:15px; width:50px; height:50px; background:#1976d2; border:none; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:100; transition:.2s; }
   .top-right-btn:hover { background:#2196f3; }
   .top-right-btn img { width:28px; height:28px; pointer-events:none; }
-
-  /* === AI CHAT OVERLAY === */
-  .overlay {
-    position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.4); display:none; align-items:center; justify-content:center; z-index:99;
-  }
-  .frame {
-    background:#fff; width:400px; height:600px; border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-    display:flex; flex-direction:column; overflow:hidden; position:relative;
-  }
-  .frame h1 {
-    margin:0; padding:15px; background:#1976d2; color:#fff; text-align:center; font-size:1.2em;
-  }
-  .frame .content {
-    flex:1; padding:10px; display:flex; flex-direction:column; gap:10px; overflow-y:auto;
-  }
-  .frame input {
-    border:none; padding:10px; font-size:1em; border-top:1px solid #ccc;
-    outline:none; width:100%; box-sizing:border-box;
-  }
-
-  /* === MESSAGE STYLING === */
+  .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:none; align-items:center; justify-content:center; z-index:99; }
+  .frame { background:#fff; width:400px; height:600px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3); display:flex; flex-direction:column; overflow:hidden; position:relative; }
+  .frame h1 { margin:0; padding:15px; background:#1976d2; color:#fff; text-align:center; font-size:1.2em; }
+  .frame .content { flex:1; padding:10px; display:flex; flex-direction:column; gap:10px; overflow-y:auto; }
+  .frame input { border:none; padding:10px; font-size:1em; border-top:1px solid #ccc; outline:none; width:100%; box-sizing:border-box; }
+  #clearChatBtn { padding:10px; background:#d32f2f; color:#fff; border:none; margin:5px; border-radius:8px; cursor:pointer; }
   .message { max-width:75%; padding:8px 12px; border-radius:12px; line-height:1.3; opacity:0; transform:translateY(10px); animation:fadeIn .3s forwards; }
   .message.ai { background:#1976d2; color:#fff; align-self:flex-start; }
   .message.user { background:#eee; color:#222; align-self:flex-end; }
@@ -70,21 +33,19 @@
 </head>
 <body>
 
-<!-- AI BUTTON -->
 <button class="top-right-btn" id="toggleFrameBtn">
   <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="AI icon">
 </button>
 
-<!-- AI CHAT FRAME -->
 <div class="overlay" id="overlay">
   <div class="frame">
     <h1>AI Support</h1>
     <div class="content" id="chatContent"></div>
     <input type="text" id="chatInput" placeholder="Type something...">
+    <button id="clearChatBtn">Clear Chat</button>
   </div>
 </div>
 
-<!-- CALCULATOR -->
 <div class="calculator">
   <div class="display" id="display">0</div>
   <div class="buttons">
@@ -98,122 +59,79 @@
 </div>
 
 <script>
-// === CALCULATOR LOGIC ===
-let expression = '';
-let showTime = true;
-
-function press(val){ expression += val; document.getElementById('display').textContent = expression; }
-function calculate(){ try{ expression = eval(expression).toString(); } catch{ expression='Error'; } document.getElementById('display').textContent = expression; }
+/* CALCULATOR */
+let expression=''; let showTime=true;
+function press(v){ expression+=v; document.getElementById('display').textContent=expression; }
+function calculate(){ try{ expression=eval(expression).toString(); }catch{ expression='Error'; } document.getElementById('display').textContent=expression; }
 function clearDisplay(){ expression=''; document.getElementById('display').textContent='0'; }
 function updateClock(){
   if(showTime){
-    const n = new Date();
+    const n=new Date();
     let h=n.getHours(), m=n.getMinutes().toString().padStart(2,'0'), s=n.getSeconds().toString().padStart(2,'0');
-    h = h%12||12;
-    document.title = `⌛ Timpul este: ${h}:${m}:${s}${n.getHours()>=12?'PM':'AM'}`;
+    h=h%12||12;
+    document.title=`⌛ Timpul este: ${h}:${m}:${s}${n.getHours()>=12?'PM':'AM'}`;
   }
+  setTimeout(updateClock,1000);
 }
-setInterval(updateClock, 1000);
-function toggleTitle(){ showTime = !showTime; document.title = showTime?updateClock():'Calc'; }
+updateClock();
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) updateClock(); });
+function toggleTitle(){ showTime=!showTime; document.title=showTime?updateClock():'Calc'; }
 window.addEventListener('beforeunload', e=>{ if(expression!==''){ e.preventDefault(); e.returnValue=''; }});
 
-// === AI FRAME LOGIC ===
-const overlay = document.getElementById('overlay');
-document.getElementById('toggleFrameBtn').onclick = ()=>{ overlay.style.display = overlay.style.display==='flex'?'none':'flex'; };
+/* AI CHAT */
+const overlay=document.getElementById('overlay');
+document.getElementById('toggleFrameBtn').onclick=()=>{ overlay.style.display=overlay.style.display==='flex'?'none':'flex'; };
 
-// === CHAT LOGIC ===
-const chatInput = document.getElementById('chatInput');
-const chatContent = document.getElementById('chatContent');
-const chatHistory = [{ role:"system", content:"You are a helpful AI assistant." }];
+const chatInput=document.getElementById('chatInput');
+const chatContent=document.getElementById('chatContent');
+const clearBtn=document.getElementById('clearChatBtn');
+const chatHistory=[{ role:"system", content:"You are a helpful AI assistant." }];
 
-// Add message to chat
-function addMessage(text, sender='ai'){
-  const msg = document.createElement('div');
-  msg.classList.add('message', sender);
-  const textDiv = document.createElement('div');
-  textDiv.textContent = text;
-  msg.appendChild(textDiv);
-
-  const ts = document.createElement('div');
-  const now = new Date();
-  ts.textContent = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-  ts.classList.add('timestamp');
-  msg.appendChild(ts);
-
+function addMessage(text,sender='ai'){
+  const msg=document.createElement('div'); msg.classList.add('message',sender);
+  const textDiv=document.createElement('div'); textDiv.textContent=text; msg.appendChild(textDiv);
+  const ts=document.createElement('div'); ts.textContent=new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0'); ts.classList.add('timestamp'); msg.appendChild(ts);
   chatContent.appendChild(msg);
-  chatContent.scrollTop = chatContent.scrollHeight;
+  chatContent.scrollTop=chatContent.scrollHeight;
 }
 
-// Send message to backend and show typing animation
+clearBtn.onclick = () => { chatContent.innerHTML=''; chatHistory.length=1; }
+
 async function sendToBackend(userText){
   chatHistory.push({ role:"user", content:userText });
   addMessage(userText,'user');
-
-  // AI "typing" placeholder
-  const typing = document.createElement('div');
-  typing.classList.add('message','ai');
-  typing.textContent = '...';
-  chatContent.appendChild(typing);
-  chatContent.scrollTop = chatContent.scrollHeight;
+  const typing=document.createElement('div'); typing.classList.add('message','ai'); typing.textContent='...';
+  chatContent.appendChild(typing); chatContent.scrollTop=chatContent.scrollHeight;
 
   try{
-    const resp = await fetch("https://calcfacutdemert.vercel.app/api/chat", {
+    const resp=await fetch("https://calcfacutdemert.vercel.app/api/chat",{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ messages:chatHistory })
+      body: JSON.stringify({ messages: chatHistory })
     });
-    const data = await resp.json();
-
-    // Remove "typing" placeholder
+    const data=await resp.json();
     chatContent.removeChild(typing);
-
     if(data.reply){
       chatHistory.push({ role:"assistant", content:data.reply.content });
-      // Animate AI reply typing
       typeMessage(data.reply.content);
-    } else {
-      addMessage("Error: no reply",'ai');
-    }
-  } catch(err){
-    console.error(err);
-    chatContent.removeChild(typing);
-    addMessage("Error contacting AI",'ai');
-  }
+    } else addMessage("Error: no reply",'ai');
+  }catch(err){ console.error(err); chatContent.removeChild(typing); addMessage("Error contacting AI",'ai'); }
 }
 
-// Animate AI reply character by character
 function typeMessage(text){
-  const msg = document.createElement('div');
-  msg.classList.add('message','ai');
-  chatContent.appendChild(msg);
-  chatContent.scrollTop = chatContent.scrollHeight;
-
+  const msg=document.createElement('div'); msg.classList.add('message','ai'); chatContent.appendChild(msg);
+  chatContent.scrollTop=chatContent.scrollHeight;
   let i=0;
   function step(){
-    if(i<text.length){
-      msg.textContent += text[i];
-      i++;
-      chatContent.scrollTop = chatContent.scrollHeight;
-      setTimeout(step, 20);
-    } else {
-      const ts = document.createElement('div');
-      const now = new Date();
-      ts.textContent = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-      ts.classList.add('timestamp');
-      msg.appendChild(ts);
-    }
+    if(i<text.length){ msg.textContent+=text[i]; i++; chatContent.scrollTop=chatContent.scrollHeight; setTimeout(step,20); }
+    else{ const ts=document.createElement('div'); ts.textContent=new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0'); ts.classList.add('timestamp'); msg.appendChild(ts); }
   }
   step();
 }
 
-// Send message on Enter
 chatInput.addEventListener('keydown', e=>{
-  if(e.key==='Enter' && chatInput.value.trim()!==''){
-    sendToBackend(chatInput.value.trim());
-    chatInput.value='';
-  }
+  if(e.key==='Enter' && chatInput.value.trim()!==''){ sendToBackend(chatInput.value.trim()); chatInput.value=''; }
 });
 </script>
-
 </body>
 </html>
