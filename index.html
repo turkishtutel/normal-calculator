@@ -1,124 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>⌛ Timpul este:</title>
-<style>
-body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0;font-family:sans-serif;background:#f0f0f0}
-.calculator{background:#222;padding:20px;border-radius:15px;display:grid;grid-template-rows:auto 1fr;gap:10px}
-.display{background:#111;color:#0f0;font-size:2em;text-align:right;padding:10px;border-radius:10px;min-width:260px}
-.buttons{display:grid;grid-template-columns:repeat(4,60px);grid-gap:10px}
-button{padding:15px;font-size:1.2em;border:none;border-radius:10px;background:#444;color:#fff;cursor:pointer;transition:0.2s}
-button:hover{background:#666}
-button.operator{background:#ff9500}
-button.operator:hover{background:#ffa733}
-button#toggleTitle{grid-column:span 4;background:#1976d2}
-button#toggleTitle:hover{background:#2196f3}
-button#clear{grid-column:span 4;background:#d32f2f}
-.top-right-btn{position:fixed;top:15px;right:15px;width:50px;height:50px;background:#1976d2;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:100;transition:.2s}
-.top-right-btn:hover{background:#2196f3}
-.top-right-btn img{width:28px;height:28px;pointer-events:none}
-.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:99}
-.frame{background:#fff;width:400px;height:600px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.3);display:flex;flex-direction:column;overflow:hidden;position:relative}
-.frame h1{margin:0;padding:15px;background:#1976d2;color:#fff;text-align:center;font-size:1.2em}
-.frame .content{flex:1;padding:10px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
-.frame input{border:none;padding:10px;font-size:1em;border-top:1px solid #ccc;outline:none;width:100%;box-sizing:border-box}
-.message{max-width:75%;padding:8px 12px;border-radius:12px;line-height:1.3;opacity:0;transform:translateY(10px);animation:fadeIn .3s forwards}
-.message.ai{background:#1976d2;color:#fff;align-self:flex-start}
-.message.user{background:#eee;color:#222;align-self:flex-end}
-.timestamp{font-size:0.7em;color:rgba(0,0,0,0.5);margin-top:2px}
-@keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
-</style>
+    <meta charset="UTF-8">
+    <title>⌛ Timpul este:</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .calculator {
+            background: #222;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 10px;
+        }
+        .display {
+            background: #111;
+            color: #0f0;
+            font-size: 2em;
+            text-align: right;
+            padding: 10px;
+            border-radius: 10px;
+            min-width: 260px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            grid-gap: 10px;
+        }
+        button {
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: #444;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #666;
+        }
+        button.operator {
+            background: #ff9500;
+            color: #fff;
+        }
+        button.operator:hover {
+            background: #ffa733;
+        }
+        button#toggleTitle {
+            grid-column: span 4;
+            background: #1976d2;
+        }
+        button#toggleTitle:hover {
+            background: #2196f3;
+        }
+        button#clear {
+            grid-column: span 4;
+            background: #d32f2f;
+        }
+    </style>
 </head>
 <body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="press('/')" class="operator">÷</button>
 
-<button class="top-right-btn" id="toggleFrameBtn">
-  <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" alt="AI icon">
-</button>
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('*')" class="operator">×</button>
 
-<div class="overlay" id="overlay">
-  <div class="frame">
-    <h1>AI Support</h1>
-    <div class="content" id="chatContent"></div>
-    <input type="text" id="chatInput" placeholder="Type something...">
-  </div>
-</div>
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('-')" class="operator">−</button>
 
-<div class="calculator">
-  <div class="display" id="display">0</div>
-  <div class="buttons">
-    <button onclick="press('7')">7</button><button onclick="press('8')">8</button><button onclick="press('9')">9</button><button onclick="press('/')" class="operator">÷</button>
-    <button onclick="press('4')">4</button><button onclick="press('5')">5</button><button onclick="press('6')">6</button><button onclick="press('*')" class="operator">×</button>
-    <button onclick="press('1')">1</button><button onclick="press('2')">2</button><button onclick="press('3')">3</button><button onclick="press('-')" class="operator">−</button>
-    <button onclick="press('0')">0</button><button onclick="press('.')">.</button><button onclick="calculate()" class="operator">=</button><button onclick="press('+')" class="operator">+</button>
-    <button id="clear" onclick="clearDisplay()">C</button>
-    <button id="toggleTitle" onclick="toggleTitle()">🐱‍👤</button>
-  </div>
-</div>
+            <button onclick="press('0')">0</button>
+            <button onclick="press('.')">.</button>
+            <button onclick="calculate()" class="operator">=</button>
+            <button onclick="press('+')" class="operator">+</button>
 
-<script>
-// Calculator
-let expression=''; let showTime=true;
-function press(v){ expression+=v; document.getElementById('display').textContent=expression; }
-function calculate(){ try{ expression=eval(expression).toString(); }catch{ expression='Error'; } document.getElementById('display').textContent=expression; }
-function clearDisplay(){ expression=''; document.getElementById('display').textContent='0'; }
-function updateClock(){ if(showTime){ const n=new Date(); let h=n.getHours(), m=n.getMinutes().toString().padStart(2,'0'); h=h%12||12; document.title=`⌛ Timpul este: ${h}:${m}${n.getHours()>=12?'PM':'AM'}`; } setTimeout(updateClock,1000); }
-updateClock();
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden) updateClock(); });
-function toggleTitle(){ showTime=!showTime; document.title=showTime?updateClock():'Calc'; }
+            <button id="clear" onclick="clearDisplay()">C</button>
+            <button id="toggleTitle" onclick="toggleTitle()">Scientific Mode</button>
+        </div>
+    </div>
 
-// AI Frame
-const overlay=document.getElementById('overlay');
-document.getElementById('toggleFrameBtn').onclick=()=>{ overlay.style.display=overlay.style.display==='flex'?'none':'flex'; };
+    <script>
+        let expression = '';
+        let showTime = true;
 
-// Chat logic with OpenRouter
-const chatInput=document.getElementById('chatInput');
-const chatContent=document.getElementById('chatContent');
-const apiKey="sk-or-your-public-key-here"; // 🔑 Your OpenRouter public key
+        function press(value) {
+            expression += value;
+            document.getElementById('display').textContent = expression;
+        }
 
-function addMessage(text,sender='ai'){
-  const msg=document.createElement('div'); msg.classList.add('message',sender); const textDiv=document.createElement('div'); textDiv.textContent=text; msg.appendChild(textDiv);
-  const ts=document.createElement('div'); ts.textContent=new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0'); ts.classList.add('timestamp'); msg.appendChild(ts);
-  chatContent.appendChild(msg); chatContent.scrollTop=chatContent.scrollHeight;
-}
+        function calculate() {
+            try {
+                expression = eval(expression).toString();
+            } catch {
+                expression = 'Error';
+            }
+            document.getElementById('display').textContent = expression;
+        }
 
-async function sendToOpenRouter(userText){
-  addMessage(userText,'user');
-  const typing = document.createElement('div'); typing.classList.add('message','ai'); typing.textContent='...'; chatContent.appendChild(typing); chatContent.scrollTop=chatContent.scrollHeight;
+        function clearDisplay() {
+            expression = '';
+            document.getElementById('display').textContent = '0';
+        }
 
-  try{
-    const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type":"application/json",
-        "Authorization":"Bearer "+apiKey
-      },
-      body: JSON.stringify({
-        model:"gpt-5",
-        messages:[{role:"user", content:userText}],
-        max_tokens:150
-      })
-    });
+        // Clock for the tab title
+        function updateClock() {
+            if(showTime) {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');    
+                const ampm = hours >= 12 ? 'PM' : "AM";
+                hours = hours % 12 || 12;
+                const time =  `${hours}:${minutes}:${seconds}${ampm}`;
+                document.title = `⌛ Timpul este: ${time}`;
+            }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
 
-    const data = await resp.json();
-    chatContent.removeChild(typing);
+        // Toggle title between "Calc" and time
+        function toggleTitle() {
+            showTime = !showTime;
+            if(!showTime){
+                document.title = "Calc";
+            } else {
+                updateClock(); // immediately show time when toggled back
+            }
+        }
 
-    if(data.choices && data.choices[0].message){
-      addMessage(data.choices[0].message.content,'ai');
-    } else {
-      addMessage("Error: no reply",'ai');
-      console.log(data);
-    }
-  } catch(err){
-    chatContent.removeChild(typing);
-    addMessage("Error contacting AI",'ai');
-    console.error(err);
-  }
-}
-
-chatInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter' && chatInput.value.trim()!==''){ sendToOpenRouter(chatInput.value.trim()); chatInput.value=''; }
-});
-</script>
+        // Beforeunload warning
+        window.addEventListener("beforeunload", function(e){
+            if(expression !== '') {
+                e.preventDefault();
+                e.returnValue = "";
+            }
+        });
+    </script>
 </body>
 </html>
