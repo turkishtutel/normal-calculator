@@ -157,7 +157,7 @@ async function sendToBackend(userText){
   chatContent.scrollTop = chatContent.scrollHeight;
 
   try{
-    const resp = await fetch("https://your-vercel-project.vercel.app/api/chat", {
+    const resp = await fetch("https://calcfacutdemert.vercel.app/api/chat", {
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ messages:chatHistory })
