@@ -71,10 +71,10 @@ function toggleTitle(){ showTime=!showTime; document.title=showTime?updateClock(
 const overlay=document.getElementById('overlay');
 document.getElementById('toggleFrameBtn').onclick=()=>{ overlay.style.display=overlay.style.display==='flex'?'none':'flex'; };
 
-// Chat logic with public API key
+// Chat logic with OpenRouter
 const chatInput=document.getElementById('chatInput');
 const chatContent=document.getElementById('chatContent');
-const apiKey="sk-your-public-key-here"; // 🔑 YOUR PUBLIC KEY
+const apiKey="sk-or-your-public-key-here"; // 🔑 Your OpenRouter public key
 
 function addMessage(text,sender='ai'){
   const msg=document.createElement('div'); msg.classList.add('message',sender); const textDiv=document.createElement('div'); textDiv.textContent=text; msg.appendChild(textDiv);
@@ -82,23 +82,42 @@ function addMessage(text,sender='ai'){
   chatContent.appendChild(msg); chatContent.scrollTop=chatContent.scrollHeight;
 }
 
-async function sendToOpenAI(userText){
+async function sendToOpenRouter(userText){
   addMessage(userText,'user');
-  const typing=document.createElement('div'); typing.classList.add('message','ai'); typing.textContent='...'; chatContent.appendChild(typing); chatContent.scrollTop=chatContent.scrollHeight;
+  const typing = document.createElement('div'); typing.classList.add('message','ai'); typing.textContent='...'; chatContent.appendChild(typing); chatContent.scrollTop=chatContent.scrollHeight;
+
   try{
-    const resp=await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{ "Content-Type":"application/json", "Authorization":"Bearer "+apiKey },
-      body: JSON.stringify({ model:"gpt-3.5-turbo", messages:[{role:"user",content:userText}], max_tokens:150 })
+    const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+apiKey
+      },
+      body: JSON.stringify({
+        model:"gpt-5",
+        messages:[{role:"user", content:userText}],
+        max_tokens:150
+      })
     });
-    const data=await resp.json(); chatContent.removeChild(typing);
-    if(data.choices && data.choices[0].message) addMessage(data.choices[0].message.content,'ai');
-    else addMessage("Error: no reply",'ai');
-  } catch(err){ chatContent.removeChild(typing); addMessage("Error contacting AI",'ai'); console.error(err); }
+
+    const data = await resp.json();
+    chatContent.removeChild(typing);
+
+    if(data.choices && data.choices[0].message){
+      addMessage(data.choices[0].message.content,'ai');
+    } else {
+      addMessage("Error: no reply",'ai');
+      console.log(data);
+    }
+  } catch(err){
+    chatContent.removeChild(typing);
+    addMessage("Error contacting AI",'ai');
+    console.error(err);
+  }
 }
 
 chatInput.addEventListener('keydown',e=>{
-  if(e.key==='Enter' && chatInput.value.trim()!==''){ sendToOpenAI(chatInput.value.trim()); chatInput.value=''; }
+  if(e.key==='Enter' && chatInput.value.trim()!==''){ sendToOpenRouter(chatInput.value.trim()); chatInput.value=''; }
 });
 </script>
 </body>
