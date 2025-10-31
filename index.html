@@ -4,31 +4,30 @@
 <meta charset="UTF-8">
 <title>⌛ Timpul este:</title>
 <style>
-  body { display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:sans-serif; background:#f0f0f0; }
-  .calculator { background:#222; padding:20px; border-radius:15px; display:grid; grid-template-rows:auto 1fr; gap:10px; }
-  .display { background:#111; color:#0f0; font-size:2em; text-align:right; padding:10px; border-radius:10px; min-width:260px; }
-  .buttons { display:grid; grid-template-columns:repeat(4,60px); grid-gap:10px; }
-  button { padding:15px; font-size:1.2em; border:none; border-radius:10px; background:#444; color:#fff; cursor:pointer; transition:0.2s; }
-  button:hover { background:#666; }
-  button.operator { background:#ff9500; }
-  button.operator:hover { background:#ffa733; }
-  button#toggleTitle { grid-column:span 4; background:#1976d2; }
-  button#toggleTitle:hover { background:#2196f3; }
-  button#clear { grid-column:span 4; background:#d32f2f; }
-  .top-right-btn { position:fixed; top:15px; right:15px; width:50px; height:50px; background:#1976d2; border:none; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:100; transition:.2s; }
-  .top-right-btn:hover { background:#2196f3; }
-  .top-right-btn img { width:28px; height:28px; pointer-events:none; }
-  .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:none; align-items:center; justify-content:center; z-index:99; }
-  .frame { background:#fff; width:400px; height:600px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.3); display:flex; flex-direction:column; overflow:hidden; position:relative; }
-  .frame h1 { margin:0; padding:15px; background:#1976d2; color:#fff; text-align:center; font-size:1.2em; }
-  .frame .content { flex:1; padding:10px; display:flex; flex-direction:column; gap:10px; overflow-y:auto; }
-  .frame input { border:none; padding:10px; font-size:1em; border-top:1px solid #ccc; outline:none; width:100%; box-sizing:border-box; }
-  #clearChatBtn { padding:10px; background:#d32f2f; color:#fff; border:none; margin:5px; border-radius:8px; cursor:pointer; }
-  .message { max-width:75%; padding:8px 12px; border-radius:12px; line-height:1.3; opacity:0; transform:translateY(10px); animation:fadeIn .3s forwards; }
-  .message.ai { background:#1976d2; color:#fff; align-self:flex-start; }
-  .message.user { background:#eee; color:#222; align-self:flex-end; }
-  .timestamp { font-size:0.7em; color:rgba(0,0,0,0.5); margin-top:2px; }
-  @keyframes fadeIn { to { opacity:1; transform:translateY(0); } }
+body{display:flex;justify-content:center;align-items:center;height:100vh;margin:0;font-family:sans-serif;background:#f0f0f0}
+.calculator{background:#222;padding:20px;border-radius:15px;display:grid;grid-template-rows:auto 1fr;gap:10px}
+.display{background:#111;color:#0f0;font-size:2em;text-align:right;padding:10px;border-radius:10px;min-width:260px}
+.buttons{display:grid;grid-template-columns:repeat(4,60px);grid-gap:10px}
+button{padding:15px;font-size:1.2em;border:none;border-radius:10px;background:#444;color:#fff;cursor:pointer;transition:0.2s}
+button:hover{background:#666}
+button.operator{background:#ff9500}
+button.operator:hover{background:#ffa733}
+button#toggleTitle{grid-column:span 4;background:#1976d2}
+button#toggleTitle:hover{background:#2196f3}
+button#clear{grid-column:span 4;background:#d32f2f}
+.top-right-btn{position:fixed;top:15px;right:15px;width:50px;height:50px;background:#1976d2;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:100;transition:.2s}
+.top-right-btn:hover{background:#2196f3}
+.top-right-btn img{width:28px;height:28px;pointer-events:none}
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:99}
+.frame{background:#fff;width:400px;height:600px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.3);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.frame h1{margin:0;padding:15px;background:#1976d2;color:#fff;text-align:center;font-size:1.2em}
+.frame .content{flex:1;padding:10px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.frame input{border:none;padding:10px;font-size:1em;border-top:1px solid #ccc;outline:none;width:100%;box-sizing:border-box}
+.message{max-width:75%;padding:8px 12px;border-radius:12px;line-height:1.3;opacity:0;transform:translateY(10px);animation:fadeIn .3s forwards}
+.message.ai{background:#1976d2;color:#fff;align-self:flex-start}
+.message.user{background:#eee;color:#222;align-self:flex-end}
+.timestamp{font-size:0.7em;color:rgba(0,0,0,0.5);margin-top:2px}
+@keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -42,7 +41,6 @@
     <h1>AI Support</h1>
     <div class="content" id="chatContent"></div>
     <input type="text" id="chatInput" placeholder="Type something...">
-    <button id="clearChatBtn">Clear Chat</button>
   </div>
 </div>
 
@@ -59,78 +57,48 @@
 </div>
 
 <script>
-/* CALCULATOR */
+// Calculator
 let expression=''; let showTime=true;
 function press(v){ expression+=v; document.getElementById('display').textContent=expression; }
 function calculate(){ try{ expression=eval(expression).toString(); }catch{ expression='Error'; } document.getElementById('display').textContent=expression; }
 function clearDisplay(){ expression=''; document.getElementById('display').textContent='0'; }
-function updateClock(){
-  if(showTime){
-    const n=new Date();
-    let h=n.getHours(), m=n.getMinutes().toString().padStart(2,'0'), s=n.getSeconds().toString().padStart(2,'0');
-    h=h%12||12;
-    document.title=`⌛ Timpul este: ${h}:${m}:${s}${n.getHours()>=12?'PM':'AM'}`;
-  }
-  setTimeout(updateClock,1000);
-}
+function updateClock(){ if(showTime){ const n=new Date(); let h=n.getHours(), m=n.getMinutes().toString().padStart(2,'0'); h=h%12||12; document.title=`⌛ Timpul este: ${h}:${m}${n.getHours()>=12?'PM':'AM'}`; } setTimeout(updateClock,1000); }
 updateClock();
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) updateClock(); });
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) updateClock(); });
 function toggleTitle(){ showTime=!showTime; document.title=showTime?updateClock():'Calc'; }
-window.addEventListener('beforeunload', e=>{ if(expression!==''){ e.preventDefault(); e.returnValue=''; }});
 
-/* AI CHAT */
+// AI Frame
 const overlay=document.getElementById('overlay');
 document.getElementById('toggleFrameBtn').onclick=()=>{ overlay.style.display=overlay.style.display==='flex'?'none':'flex'; };
 
+// Chat logic with public API key
 const chatInput=document.getElementById('chatInput');
 const chatContent=document.getElementById('chatContent');
-const clearBtn=document.getElementById('clearChatBtn');
-const chatHistory=[{ role:"system", content:"You are a helpful AI assistant." }];
+const apiKey="sk-your-public-key-here"; // 🔑 YOUR PUBLIC KEY
 
 function addMessage(text,sender='ai'){
-  const msg=document.createElement('div'); msg.classList.add('message',sender);
-  const textDiv=document.createElement('div'); textDiv.textContent=text; msg.appendChild(textDiv);
+  const msg=document.createElement('div'); msg.classList.add('message',sender); const textDiv=document.createElement('div'); textDiv.textContent=text; msg.appendChild(textDiv);
   const ts=document.createElement('div'); ts.textContent=new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0'); ts.classList.add('timestamp'); msg.appendChild(ts);
-  chatContent.appendChild(msg);
-  chatContent.scrollTop=chatContent.scrollHeight;
+  chatContent.appendChild(msg); chatContent.scrollTop=chatContent.scrollHeight;
 }
 
-clearBtn.onclick = () => { chatContent.innerHTML=''; chatHistory.length=1; }
-
-async function sendToBackend(userText){
-  chatHistory.push({ role:"user", content:userText });
+async function sendToOpenAI(userText){
   addMessage(userText,'user');
-  const typing=document.createElement('div'); typing.classList.add('message','ai'); typing.textContent='...';
-  chatContent.appendChild(typing); chatContent.scrollTop=chatContent.scrollHeight;
-
+  const typing=document.createElement('div'); typing.classList.add('message','ai'); typing.textContent='...'; chatContent.appendChild(typing); chatContent.scrollTop=chatContent.scrollHeight;
   try{
-    const resp=await fetch("https://calcfacutdemert.vercel.app/api/chat",{
+    const resp=await fetch("https://api.openai.com/v1/chat/completions",{
       method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ messages: chatHistory })
+      headers:{ "Content-Type":"application/json", "Authorization":"Bearer "+apiKey },
+      body: JSON.stringify({ model:"gpt-3.5-turbo", messages:[{role:"user",content:userText}], max_tokens:150 })
     });
-    const data=await resp.json();
-    chatContent.removeChild(typing);
-    if(data.reply){
-      chatHistory.push({ role:"assistant", content:data.reply.content });
-      typeMessage(data.reply.content);
-    } else addMessage("Error: no reply",'ai');
-  }catch(err){ console.error(err); chatContent.removeChild(typing); addMessage("Error contacting AI",'ai'); }
+    const data=await resp.json(); chatContent.removeChild(typing);
+    if(data.choices && data.choices[0].message) addMessage(data.choices[0].message.content,'ai');
+    else addMessage("Error: no reply",'ai');
+  } catch(err){ chatContent.removeChild(typing); addMessage("Error contacting AI",'ai'); console.error(err); }
 }
 
-function typeMessage(text){
-  const msg=document.createElement('div'); msg.classList.add('message','ai'); chatContent.appendChild(msg);
-  chatContent.scrollTop=chatContent.scrollHeight;
-  let i=0;
-  function step(){
-    if(i<text.length){ msg.textContent+=text[i]; i++; chatContent.scrollTop=chatContent.scrollHeight; setTimeout(step,20); }
-    else{ const ts=document.createElement('div'); ts.textContent=new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0'); ts.classList.add('timestamp'); msg.appendChild(ts); }
-  }
-  step();
-}
-
-chatInput.addEventListener('keydown', e=>{
-  if(e.key==='Enter' && chatInput.value.trim()!==''){ sendToBackend(chatInput.value.trim()); chatInput.value=''; }
+chatInput.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && chatInput.value.trim()!==''){ sendToOpenAI(chatInput.value.trim()); chatInput.value=''; }
 });
 </script>
 </body>
