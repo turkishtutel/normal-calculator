@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recenzie: Amintiri din copilărie - Partea 1</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #fdf6e3, #ffe4c4);
+        color: #333;
+        scroll-behavior: smooth;
+    }
+
+    header {
+        background-color: #ffb347;
+        color: white;
+        text-align: center;
+        padding: 2rem 1rem;
+        animation: slideDown 1s ease forwards;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        animation: fadeIn 2s ease forwards;
+    }
+
+    main {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        animation: fadeInUp 1.5s ease forwards;
+    }
+
+    section {
+        margin-bottom: 2rem;
+    }
+
+    h2 {
+        color: #ff7e5f;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        color: #ff9363;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        line-height: 1.8;
+        margin-bottom: 1rem;
+        text-align: justify;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInParagraph 1s forwards;
+    }
+
+    p:nth-of-type(1) { animation-delay: 0.3s; }
+    p:nth-of-type(2) { animation-delay: 0.6s; }
+    p:nth-of-type(3) { animation-delay: 0.9s; }
+    p:nth-of-type(4) { animation-delay: 1.2s; }
+    p:nth-of-type(5) { animation-delay: 1.5s; }
+    p:nth-of-type(6) { animation-delay: 1.8s; }
+
+    .book-cover {
+        display: block;
+        margin: 1rem auto;
+        max-width: 200px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        transform: scale(0);
+        animation: zoomIn 1s forwards 0.5s;
+    }
+
+    footer {
+        text-align: center;
+        padding: 1rem;
+        margin-top: 2rem;
+        color: #555;
+        font-size: 0.9rem;
+    }
+
+    @keyframes slideDown {
+        from { transform: translateY(-100px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeInParagraph {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Recenzie: Amintiri din copilărie – Partea 1</h1>
+</header>
+
+<main>
+    <img src="/Amintiri_din_copilarie_(Taru_edition,_1959).jpg" class="book-cover">
+    <section>
+        <h2>Introducere</h2>
+        <p><strong>Recenzie de :</strong> „Amintiri din copilărie – Partea 1” de Ion Creangă.</p>
+        <p><strong>Autorul:</strong> Ion Creangă</p>
+        <p><strong>Alte lucrări:</strong> Capra cu trei iezi, Danila Prepeleac, Fata babei si fata mosneagului, Fat-Frumos, fiul iepei, Povestea lui Harap-Alb, Povestea lui Ionica cel prost, Ivan Trubinca, Povestea lui Stan-Patitul etc.</p>
+        <p><strong>Teme abordate:</strong> copilăria, satul romanesc, educatia, familia, umorul, tradițiile, iubirea materna, calatoria, relatia om-animal </p>
+        <p><strong>De catre critica de specialitate a fost receptat astfel:</strong>
+        George Calinescu: "In Amintiri din copilarie este simbolizat destinul oricarui copil: de a face bucuria si supararea parintilor si de a lua si el cu- ncetul pe acelasi drum pe care l- au luat si- l vor lua toti. In Amintirile lui Creanga nu este nimic individual, nimic cu caracter de confesiune ori de jurnal care sa configureze o complexitate sufleteasca noua. Creanga povesteste copilaria copilului universal"
+        Pompiliu Constantinescu:  In Ion Creanga vedem astazi pe primul romancier al literaturii noastre, pe primul creator de epos, nu in timpul istorico- literar, ci intr- o durata spirituala, fiindca romanul lui Filimon anticipeaza cu doua decenii Amintirile.
+        Satul lui Creanga este anterior, ca psihologie si asezare sociala, fata de orasul ciocoilor lui Filimon, iar amandoi sunt cititori a doua structuri si traditii de sensibilitate in proza romaneasca[…].
+        Creanga observa exclusiv natura umana; geniul lui lucid, muscator, spiritul realist si umorul lui melancolic releva un moralist. 
+        Narativ si observator prin excelenta, Creanga este un psiholog in miscare. Forta lui creatoare este epica, iar neuitatele tipuri din Amintiri sunt prinse in structura lor etica. Mama, tatal, fratii, bunicul si bunica, matusile si megiesii cresc in esenta lor morala, cu insusirile si defectele fundamentale ale taranului legat de realitatile tangibile ale satului si profesiei. 
+        Creator de tipuri, Creanga va aplica aceeasi observatie, calma si muscatoare , asupra colegilor, dascalilor, asupra popilor si catorva tipuri pitoresti, poetizandu- i numai in potenta imaginatiei tinzand spre epos. Amintirile sunt o epopee a satului si o atitudine a sensibilitatii, o acceptare a vietii, in ecourile ei profund umane, cu filozofia ei resemnata.
+        Umorul lui Creanga este insusi umorul vietii, al acestui fenomen organic, in care durerea si bucuria, raul si binele, prostia si inteligenta, umbra si lumina se imbratiseaza alternativ, ca s- o exprime in toata realitatea.
+        Oamenii lui Creanga sunt vii ca viata, schimbatori ca ea, naturali ca radacinile ei, de care nu se pot desprinde. Ion Creanga este autentic fiindca este firesc, este clasic fiindca este nuantat in omenesc si este mereu proaspat, fiindca intuitiile lui sunt insesi intuitiile naturii omenesti.
+        </p>
+        <p><strong>Publicare:</strong> Prima apariție în 1881 in revista Convorbiri literare</p>
+    </section>
+
+    <section>
+        <h2>Cuprins / Analiză detaliată</h2>
+
+        <p>Cartea este structurată în mai multe povestiri scurte care surprind copilăria lui Nică în satul Humulești. Fiecare povestire explorează o întâmplare diferită, cu personaje memorabile, umor și lecții de viață.</p>
+
+        <p>Printre cele mai remarcabile povești se numără aventurile lui Nică la școală, jocurile cu prietenii, pățaniile cu părinții și vecinii și întâlnirile cu dascălii sau oameni de seamă din sat. Stilul narativ este viu, folosind expresii populare și dialoguri autentice.</p>
+
+        <p>În relație cu alte lucrări ale lui Creangă, cartea continuă aceeași atmosferă plină de umor și nostalgia copilăriei, dar se concentrează mai mult pe primii ani și experiențele timpurii ale protagonistului.</p>
+
+        <p>Punctele forte ale cărții includ autenticitatea limbajului, detaliile vii ale vieții satului, umorul subtil și capacitatea de a crea imagini memorabile în mintea cititorului. Minusurile pot fi pentru cititorii care preferă un fir narativ modern și structurat; povestirile sunt mai degrabă episodice și uneori repetitiv.</p>
+
+        <p>Lectura provoacă emoții variate: zâmbete, nostalgie, curiozitate și apreciere pentru viața simplă și valorile tradiționale. Cartea răspunde așteptărilor celor interesați de literatura clasică română și oferă o experiență plăcută de lectură.</p>
+
+        <p>În ansamblu, „Amintiri din copilărie – Partea 1” este o carte care captează atenția prin povești memorabile, stilul narativ autentic și umorul său, fiind o lectură recomandată tuturor celor care vor să descopere copilăria și cultura satului românesc de odinioară.</p>
+    </section>
+
+    <section>
+        <h2>Încheiere</h2>
+        <p>Concluzia recenziei: cartea este captivantă, plină de farmec și umor, evocând amintiri și emoții pozitive. Este o lectură esențială pentru cei care doresc să înțeleagă copilăria în mediul rural românesc tradițional.</p>
+        <p>Recomandarea: recomand cu căldură această carte tuturor celor interesați de literatura clasică română, indiferent de vârstă.</p>
+    </section>
+</main>
+
+<footer>
+    &copy; 2025 Recenzii Carte | Realizata de Mert Ulas
+</footer>
+
+</body>
+</html>
