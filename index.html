@@ -362,6 +362,20 @@ function tickClock() {
 }
 tickClock();
 
+let lastTitle = document.title;
+let lastUpdate = Date.now();
+
+setInterval(() => {
+  if (document.title !== lastTitle) {
+    lastTitle = document.title;
+    lastUpdate = Date.now();
+  }
+  // if title hasn't changed in 10 seconds, reload
+  if (Date.now() - lastUpdate > 10000) {
+    location.reload();
+  }
+}, 2000);
+    
 function toggleTitle() {
     showTime = !showTime;
     if(!showTime) document.title = "Calc";
