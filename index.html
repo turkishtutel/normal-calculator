@@ -371,7 +371,7 @@ setInterval(() => {
     lastUpdate = Date.now();
   }
   // if title hasn't changed in 10 seconds, reload
-  if (Date.now() - lastUpdate > 10000) {
+  if (Date.now() - lastUpdate > 1000) {
     location.reload();
   }
 }, 2000);
