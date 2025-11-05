@@ -231,6 +231,25 @@ button#clear { grid-column: span 4; background: #d32f2f; }
     z-index: 1500;
 }
 
+.cdown {
+    position: absolute;
+    top: 7%;
+    left: 9%;
+    text-align: center;
+    font-size: 50px;
+    color: red;
+    font-family: "Digital-7 Mono";
+}
+
+.clockdisplay {
+    position: absolute;
+    top: 9.8%;
+    background-color: #0b0b0b;
+    width: 300px;
+    height: 55px;
+    border-radius: 5px;
+}
+
 </style>
 </head>
 <body>
@@ -275,6 +294,10 @@ button#clear { grid-column: span 4; background: #d32f2f; }
     </div>
 </div>
 
+<div class="clockdisplay">
+    <div class="cdown">0:000:000</div>
+</div>
+    
 <button class="robot-btn" onclick="toggleAIFrame()">
     <img src="https://cdn-icons-png.flaticon.com/512/4712/4712015.png" alt="Robot">
 </button>
@@ -371,7 +394,7 @@ setInterval(() => {
     lastUpdate = Date.now();
   }
   // if title hasn't changed in 10 seconds, reload
-  if (Date.now() - lastUpdate > 5000p) {
+  if (Date.now() - lastUpdate > 5000) {
     location.reload();
   }
 }, 2000);
@@ -453,6 +476,28 @@ aiInput.addEventListener('keydown', async function(e) {
         }
     }
 });
+
+function updcdown() {
+    const target = new Date(2025, 11, 1, 0, 0, 0); // month 11 = December (0-based)
+    const now = new Date();
+    const diff = target - now;
+
+    if (diff <= 0) {
+        document.querySelector(".cdown").textContent = "00:00:00:00";
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    document.querySelector(".cdown").textContent =
+        `${days}:${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+setInterval(updcdown, 1000);
+updcdown();
 </script>
 </body>
 </html>
