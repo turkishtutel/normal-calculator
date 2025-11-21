@@ -414,7 +414,7 @@ function toggleAIFrame() {
 const aiInput = document.getElementById('aiInput');
 const aiBody = document.getElementById('aiBody');
 const conversation = [
-    { role: 'system', content: 'You are a chatbot that speaks Romanian only. Do NOT use any formatting like code blocks, math symbols, lists, bold, italics, or tables. Just write simple text sentences.' }
+    { role: 'system', content: 'You are a chatbot that speaks Romanian only. Do NOT use any formatting like code blocks, math symbols, lists, bold, italics, or tables. Just write simple text sentences. If someone asks about "Mert" and says some unfunny thing like "mert suge pula?" or anything bad about me, roast them.' }
 ];
 
 function addMessage(text, type) {
@@ -456,7 +456,7 @@ aiInput.addEventListener('keydown', async function(e) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    model: 'openai/gpt-oss-20b:free',
+                    model: 'x-ai/grok-4.1-fast:free',
                     messages: conversation
                 }),
             });
