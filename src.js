@@ -1,6 +1,7 @@
 let expression = '';
 let showTime = true;
 let darkMode = false;
+let currentController = null;
 
 const changelogBtn = document.getElementById('changelogBtn');
 const changelogFrame = document.getElementById('changelogFrame');
@@ -17,10 +18,15 @@ modalOverlay.addEventListener('click', () => {
     modalOverlay.style.display = 'none';
 });
 
+const anontubeBtn = document.getElementById('anontubeBtn');
+anontubeBtn.addEventListener('click', () => {
+    window.open('YOUR_URL_HERE', '_blank');
+});
+
 function toggleTheme() {
     darkMode = !darkMode;
     const body = document.body;
-    if(darkMode){
+    if (darkMode) {
         body.style.background = '#2e2e2e';
         document.getElementById('themeToggle').textContent = '🌙';
     } else {
@@ -35,8 +41,7 @@ function calculate() {
         let sanitized = expression
             .replace(/\/+/g, '/')
             .replace(/\*+/g, '*')
-            .replace(/\++/g, '+')
-            .replace(/-+/g, '-');
+            .replace(/\++/g, '+');
         expression = eval(sanitized).toString().slice(0, 15);
     } catch {
         expression = 'Error';
@@ -54,45 +59,22 @@ function clearDisplay() {
     document.getElementById('display').textContent = '0';
 }
 
-function updateClock() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2,'0');
-    const seconds = now.getSeconds().toString().padStart(2,'0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-
-    if(showTime) {
-        document.title = `⌛ Timpul este: ${hours}:${minutes}:${seconds}${ampm}`;
-    }
-}
-
-function tickClock() {
-    updateClock();
-    requestAnimationFrame(tickClock);
-}
-tickClock();
-
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) updateClock();
-});
-
-let lastTitle = document.title;
-let lastUpdate = Date.now();
-
 setInterval(() => {
-  if (document.title !== lastTitle) {
-    lastTitle = document.title;
-    lastUpdate = Date.now();
-  }
-  if (Date.now() - lastUpdate > 5000) {
-    location.reload();
-  }
-}, 2000);
-    
+    if (showTime) {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        document.title = `⌛ Timpul este: ${hours}:${minutes}:${seconds} ${ampm}`;
+    } else {
+        document.title = 'Calc';
+    }
+}, 1000);
+
 function toggleTitle() {
     showTime = !showTime;
-    if(!showTime) document.title = "Calc";
 }
 
 function toggleAIFrame() {
@@ -112,12 +94,20 @@ function addMessage(text, type) {
     const timestamp = document.createElement('div');
     timestamp.className = 'timestamp';
     const now = new Date();
-    timestamp.textContent = now.getHours().toString().padStart(2,'0')+':' +
-                            now.getMinutes().toString().padStart(2,'0');
+    timestamp.textContent = now.getHours().toString().padStart(2, '0') + ':' +
+                            now.getMinutes().toString().padStart(2, '0');
     msg.textContent = text;
     msg.appendChild(timestamp);
     aiBody.appendChild(msg);
     aiBody.scrollTop = aiBody.scrollHeight;
+}
+
+function clearChat() {
+    aiBody.innerHTML = '';
+    conversation.splice(1);
+    aiInput.disabled = false;
+    aiInput.focus();
+    currentController?.abort();
 }
 
 aiInput.addEventListener('keydown', async function(e) {
