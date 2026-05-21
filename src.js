@@ -5,8 +5,6 @@ let darkMode = false;
 const changelogBtn = document.getElementById('changelogBtn');
 const changelogFrame = document.getElementById('changelogFrame');
 const modalOverlay = document.getElementById('modalOverlay');
-const musicplayer = document.getElementById('musictoggle')
-const music = document.getElementById('bgMusic')
 
 changelogBtn.addEventListener('click', () => {
     const isOpen = changelogFrame.style.display === 'flex';
@@ -140,40 +138,50 @@ aiInput.addEventListener('keydown', async function(e) {
         aiBody.scrollTop = aiBody.scrollHeight;
 
         try {
-            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            const model = 'gemini-2.5-flash';
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+            const geminiContents = conversation
+                .filter(msg => msg.role !== 'system')
+                .map(msg => ({
+                    role: msg.role === 'assistant' ? 'model' : 'user',
+                    parts: [{ text: msg.content }]
+                }));
+
+            currentController = new AbortController();
+
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    Authorization: 'Bearer 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',
+                    'x-goog-api-key': 'AIzaSyD2BBb6BYxn7DO73VcH6l2VizNesuiIzg4',
                     'Content-Type': 'application/json',
                 },
+                signal: currentController.signal,
                 body: JSON.stringify({
-                    model: 'openai/gpt-oss-20b:free',
-                    messages: conversation
+                    system_instruction: {
+                        parts: [{ text: conversation[0].content }]
+                    },
+                    contents: geminiContents
                 }),
             });
+
             const data = await response.json();
-            const reply = data.choices?.[0]?.message?.content 
-                || data.error?.message 
+
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text
+                || data.error?.message
                 || "No response";
+
             conversation.push({ role: 'assistant', content: reply });
             typingMsg.remove();
             addMessage(reply, 'ai-msg');
         } catch(err) {
             typingMsg.remove();
-            addMessage("Error: " + err.message, 'ai-msg');
+            if (err.name !== 'AbortError') {
+                addMessage("Error: " + err.message, 'ai-msg');
+            }
         } finally {
             aiInput.disabled = false;
             aiInput.focus();
         }
     }
 });
-
-musicplayer.addEventListener('click', () => {
-    if (music.paused) {
-        music.play();
-        musicplayer.textContent = "⏸";
-    } else {
-        music.pause();
-        musicplayer.textContent = "▶"
-    }
-})
