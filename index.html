@@ -9,17 +9,17 @@
 </head>
 <body>
 
-<button id="changelogBtn" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index:1001;">CHANGELOG V1.2</button>
+<button id="changelogBtn">CHANGELOG V1.3</button>
 
 <div class="modal-overlay" id="modalOverlay"></div>
 
 <div class="changelog-frame" id="changelogFrame">
-    <div class="changelog-header">CHANGELOGUL PENTRU V1.1</div>
+    <div class="changelog-header">CHANGELOGUL PENTRU V1.3</div>
     <div class="changelog-body">
-        <p style="padding-left: 20px; color: #fff; font: fredoka-one; font-size: 30px;">• (nu) Temă de crăciun! </p>
-        <p style="padding-left: 20px; color: #fff; font: fredoka-one; font-size: 30px;">• (nu) Muzici de crăciun </p>
-        <p style="padding-left: 20px; color: #fff; font: fredoka-one; font-size: 30px;">• AI-ul este Gemini acuma, cam un picuț încet</p>
-        <p style="padding-left: 20px; color: #fff; font: fredoka-one; font-size: 30px;">• Am scos countdown-ul</p>
+        <p>• Nu mai este tema de craciun</p>
+        <p>• Am scos muzica de craciun</p>
+        <p>• AI: Gemini</p>
+        <p>• Am scos countdown-ul</p>
     </div>
 </div>
 
@@ -49,13 +49,16 @@
     </div>
 </div>
 
-
 <button class="robot-btn" onclick="toggleAIFrame()">
     <img src="https://cdn-icons-png.flaticon.com/512/4712/4712015.png" alt="Robot">
 </button>
 
 <div class="ai-frame" id="aiFrame">
-    <div class="ai-header">AI SUPPORT</div>
+    <div class="ai-header">
+        <button onclick="clearChat()" style="background:none; border:none; cursor:pointer; font-size:13px; color:inherit; padding:0 6px;">🔄</button>
+        AI SUPPORT
+        <span style="width:25px;"></span>
+    </div>
     <div class="ai-body" id="aiBody"></div>
     <textarea class="ai-textbox" id="aiInput" placeholder="Type your message..."></textarea>
 </div>
